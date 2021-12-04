@@ -76,9 +76,15 @@ const parseCompletionData = (data: CompletionDataRaw) => {
         if (star === "2") {
           const star1Ts = data[day]["1"].get_star_ts;
           const diff = Math.ceil(get_star_ts - star1Ts);
-          const diffm = Math.floor(diff / 60);
+          const diffh = Math.floor(diff / 3600);
+          const diffm = Math.floor((diff % 3600) / 60);
           const diffs = diff % 60;
-          return { ...sacc, [star]: `${s} (+${diffm}m${diffs}s)` };
+          if (diffh > 0) {
+            return { ...sacc, [star]: `${s} (+${diffh}h${diffm}m${diffs}s)` };
+          } else if (diffm > 0) {
+            return { ...sacc, [star]: `${s} (+${diffm}m${diffs}s)` };
+          }
+          return { ...sacc, [star]: `${s} (+${diffs}s)` };
         }
         return { ...sacc, [star]: s };
       }, {} as { [key: string]: string }),

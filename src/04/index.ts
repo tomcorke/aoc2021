@@ -15,18 +15,21 @@ class Board {
   constructor(data: number[][]) {
     this.data = data;
   }
-  [util.inspect.custom]() {
+  displayWithMarks(marks: Set<number>) {
     return `[\n${this.data
       .map((row) =>
         row
           .map((n) => {
             const sn = n.toString().padStart(2, " ");
-            return this.marks.has(n) ? `\x1b[1m\x1b[41m${sn}\x1b[0m` : sn;
+            return marks.has(n) ? `\x1b[1m\x1b[41m${sn}\x1b[0m` : sn;
           })
           .join(" ")
       )
       .map((r) => ` ${r}`)
       .join("\n")}\n]`;
+  }
+  [util.inspect.custom]() {
+    return this.displayWithMarks(this.marks);
   }
   setMarks(marks: Set<number>) {
     this.marks = marks;
