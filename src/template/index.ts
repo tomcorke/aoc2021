@@ -11,6 +11,10 @@ const getInput = readFileSeparated("\n", "xx", "input").then(
   (values) => values
 );
 
+const getTestInput = readFileSeparated("\n", "xx", "testInput").then(
+  (values) => values
+);
+
 const solution: Solution = async () => {
   const input = await getInput;
 
@@ -18,6 +22,7 @@ const solution: Solution = async () => {
 };
 
 solution.tests = async () => {
+  const testInput = await getTestInput;
   await expect(() => 123, 123);
 };
 
