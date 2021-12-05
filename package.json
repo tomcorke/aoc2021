@@ -7,7 +7,8 @@
     "build": "tsc",
     "start": "nodemon",
     "built": "node ./build/",
-    "report": "ts-node ./report.ts"
+    "report": "ts-node ./report.ts",
+    "setup": "ts-node ./setup.ts"
   },
   "repository": {
     "type": "git",

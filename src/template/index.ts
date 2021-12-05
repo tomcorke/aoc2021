@@ -7,11 +7,11 @@ import {
 } from "../helpers";
 import { Solution } from "..";
 
-const getInput = readFileSeparated("\n", "xx", "input").then(
-  (values) => values
-);
+const DAY = "{DAY}";
 
-const getTestInput = readFileSeparated("\n", "xx", "testInput").then(
+const getInput = readFileSeparated("\n", DAY, "input").then((values) => values);
+
+const getTestInput = readFileSeparated("\n", DAY, "testInput").then(
   (values) => values
 );
 
