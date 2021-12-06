@@ -37,7 +37,7 @@ fs.copyFileSync("./src/template/testInput", `${dayPath}/testInput`);
 
 console.log("Fetching input...");
 (async () => {
-  const res = await fetch(inputUrl(5), {
+  const res = await fetch(inputUrl(day), {
     headers: {
       Cookie: `session=${sessionCookie}`,
     },
