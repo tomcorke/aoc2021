@@ -9,15 +9,47 @@ import { Solution } from "..";
 
 const DAY = "06";
 
-const getInput = readFileSeparated("\n", DAY, "input").then((values) =>
-  values.filter((v) => v).flatMap((v) => v.split(",").map((n) => parseInt(n)))
+interface FishMap {
+  [days: number]: number;
+}
+
+const getInput = readFileSeparated(",", DAY, "input").then((values) =>
+  values
+    .filter((v) => v.trim())
+    .reduce((acc, curr) => {
+      const c = parseInt(curr);
+      return { ...acc, [c]: (acc[c] || 0) + 1 };
+    }, {} as FishMap)
 );
 
-const getTestInput = readFileSeparated("\n", DAY, "testInput").then((values) =>
-  values.filter((v) => v).flatMap((v) => v.split(",").map((n) => parseInt(n)))
+const getTestInput = readFileSeparated(",", DAY, "testInput").then((values) =>
+  values
+    .filter((v) => v.trim())
+    .reduce((acc, curr) => {
+      const c = parseInt(curr);
+      return { ...acc, [c]: (acc[c] || 0) + 1 };
+    }, {} as FishMap)
 );
 
-const process = (input: number[]) => {};
+const process = (input: FishMap, days = 80) => {
+  let day = 0;
+  let fish = { ...input };
+  while (day < days) {
+    let nf = 0;
+    fish = Object.entries(fish).reduce((newFish, [d, c]) => {
+      const dn = parseInt(d);
+      let nd = dn - 1;
+      if (dn === 0) {
+        nd = 6;
+        nf = c;
+      }
+      return { ...newFish, [nd]: (newFish[nd] || 0) + c };
+    }, {} as FishMap);
+    fish[8] = nf;
+    day++;
+  }
+  return Object.values(fish).reduce((acc, curr) => acc + curr, 0);
+};
 
 const solution: Solution = async () => {
   const input = await getInput;
@@ -27,11 +59,12 @@ const solution: Solution = async () => {
 solution.tests = async () => {
   const testInput = await getTestInput;
   await expect(() => process(testInput), 5934);
+  await expect(() => process(testInput, 256), 26984457539);
 };
 
 solution.partTwo = async () => {
   const input = await getInput;
-  return NaN;
+  return process(input, 256);
 };
 
 solution.inputs = [getInput];
