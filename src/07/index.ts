@@ -29,20 +29,34 @@ const INCREASING = (a: number, b: number) => {
 };
 
 const process = (input: number[], getCost = LINEAR) => {
-  // const avg = input.reduce((sum, v) => sum + v, 0) / input.length;
-  const median = input.slice().sort()[Math.floor(input.length / 2)];
-  const q = input.length;
-  const tests = new Array(q)
-    .fill(0)
-    .map((_, i) => median + (i - Math.floor(q / 2)));
-  return tests.reduce((min, test) => {
-    const diffs = input.map((v) => getCost(v, test));
-    const sum = diffs.reduce((sum, v) => sum + v, 0);
-    if (isNaN(min) || sum < min) {
-      return sum;
+  const [imin, imax] = [Math.min(...input), Math.max(...input)];
+  const mid = Math.floor((imin + imax) / 2);
+
+  const test = (x: number) => {
+    const diffs = input.map((v) => getCost(v, x));
+    return diffs.reduce((sum, v) => sum + v, 0);
+  };
+
+  let s = Math.ceil((imax - imin) / 4);
+  let n = mid;
+  while (true) {
+    const [l, c, r] = [test(n - 1), test(n), test(n + 1)];
+    if (c < l && c < r && s === 1) {
+      break;
+    } else if (l < c) {
+      n -= s;
+    } else if (r < c) {
+      n += s;
+    } else if (r < l) {
+      n += s;
+    } else if (l < r) {
+      n -= s;
+    } else {
+      throw Error("Unexpected");
     }
-    return min;
-  }, NaN);
+    s = Math.ceil(s / 2);
+  }
+  return test(n);
 };
 
 const solution: Solution = async () => {
