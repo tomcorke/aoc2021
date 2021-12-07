@@ -11,7 +11,7 @@ export type Solution = {
 
 const args = Array.from(process.argv.slice(2));
 
-const validDayRegex = /^\d{2}$/;
+const validDayRegex = /^\d{1,2}$/;
 
 if (!args[0] || !validDayRegex.test(args[0])) {
   throw Error(
@@ -19,9 +19,11 @@ if (!args[0] || !validDayRegex.test(args[0])) {
   );
 }
 
+const dayString = args[0].padStart(2, "0");
+
 let solution: Solution | undefined;
 try {
-  solution = require(`./${args[0]}/`).default;
+  solution = require(`./${dayString}/`).default;
 } catch (e: any) {
   console.error(`Error loading solution for day ${args[0]}:`, e.message);
   process.exit(1);
