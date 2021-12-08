@@ -14,9 +14,7 @@ const args = Array.from(process.argv.slice(2));
 const validDayRegex = /^\d{1,2}$/;
 
 if (!args[0] || !validDayRegex.test(args[0])) {
-  throw Error(
-    'Day must be specified as two digit number, e.g. "npm start -- 01"'
-  );
+  throw Error('Day must be specified as number, e.g. "npm start 12"');
 }
 
 const dayString = args[0].padStart(2, "0");

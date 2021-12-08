@@ -1,34 +1,36 @@
-import {
-  readFile,
-  readFileLines,
-  readFileSeparated,
-  toNumber,
-  expect,
-} from "../helpers";
+import { readFileSeparated, toNumber, expect } from "../helpers";
 import { Solution } from "..";
 
 const DAY = "{DAY}";
 
-const getInput = readFileSeparated("\n", DAY, "input").then((values) => values);
+type Input = string[];
+const parseInput = (values: string[]): Input => values;
 
-const getTestInput = readFileSeparated("\n", DAY, "testInput").then(
-  (values) => values
-);
+const getInput = readFileSeparated("\n", DAY, "input").then(parseInput);
+const getTestInput = readFileSeparated("\n", DAY, "testInput").then(parseInput);
+
+const processPartOne = (input: Input): number => {
+  return NaN;
+};
+
+const processPartTwo = (input: Input): number => {
+  return NaN;
+};
 
 const solution: Solution = async () => {
   const input = await getInput;
-
-  return NaN;
+  return processPartOne(input);
 };
 
 solution.tests = async () => {
   const testInput = await getTestInput;
-  await expect(() => 123, 123);
+  await expect(() => processPartOne(testInput), 3.141592653589793);
+  // await expect(() => processPartTwo(testInput), 3.141592653589793);
 };
 
 solution.partTwo = async () => {
   const input = await getInput;
-  return NaN;
+  return processPartTwo(input);
 };
 
 solution.inputs = [getInput];
