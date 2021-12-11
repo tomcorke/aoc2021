@@ -80,7 +80,6 @@ const process2 = (lines: Line[]) => {
     const inputCf = line.inputs.find((i) => i.length === 2)!; // One
     const inputBcdf = line.inputs.find((i) => i.length === 4)!; // Four
     const inputAcf = line.inputs.find((i) => i.length === 3)!; // Seven
-    const inputAbcdefg = line.inputs.find((i) => i.length === 7)!; // Eight
 
     const inputZeroSixNine = line.inputs.filter((i) => i.length === 6); // Zero, Six or Nine
     const inputAbfg = segments.filter((s) =>
