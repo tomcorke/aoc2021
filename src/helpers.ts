@@ -55,7 +55,7 @@ export const expect = async <T>(
   const actual = await test();
   if (actual !== expected) {
     throw Error(
-      `Test failed, expected result ${expected}, actual result ${actual}`
+      `Test failed, expected result:\n\t${expected}\nactual result:\n\t${actual}`
     );
   }
 };

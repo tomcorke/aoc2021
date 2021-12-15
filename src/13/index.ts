@@ -65,7 +65,7 @@ const process = (input: Input, foldLimit: number = NaN) => {
       ([x, y], i) => points.findIndex(([x2, y2]) => x === x2 && y === y2) === i
     );
   });
-  display(points);
+  isNaN(foldLimit) && display(points);
   return points.length;
 };
 
