@@ -46,7 +46,7 @@ const timeSolution = async <T>(func: () => T) => {
     }
 
     if (args.includes("--wait")) {
-      console.log('Pausing with "--wait", press any key to continue...');
+      console.log('Pausing with "--wait", press enter to continue...');
       await new Promise<void>((resolve) => {
         process.stdin.setRawMode && process.stdin.setRawMode(true);
         process.stdin.resume();
