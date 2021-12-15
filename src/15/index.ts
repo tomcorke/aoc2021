@@ -61,12 +61,7 @@ const process = (input: Input): number => {
     Math.floor(index / w),
   ];
 
-  const unvisitedNodes: Set<number> = new Set();
-  for (let y = 0; y < h; y++) {
-    for (let x = 0; x < w; x++) {
-      unvisitedNodes.add(coordToIndex([x, y]));
-    }
-  }
+  const visitedNodes: Set<number> = new Set();
   const eligibleNodes: Set<number> = new Set();
   for (let y = 0; y < 2; y++) {
     for (let x = 0; x < 2; x++) {
@@ -75,9 +70,6 @@ const process = (input: Input): number => {
   }
 
   const dist: Map<number, number> = new Map();
-  for (const index of unvisitedNodes.values()) {
-    dist.set(index, Infinity);
-  }
   dist.set(0, 0);
 
   const prevNodes: Map<number, number> = new Map();
@@ -93,32 +85,35 @@ const process = (input: Input): number => {
     const nodeIndex = coordToIndex(node);
     const unvisitedNeighbours: Coord[] = (
       [
-        [lx, ly - 1],
         [lx, ly + 1],
-        [lx - 1, ly],
         [lx + 1, ly],
+        [lx, ly - 1],
+        [lx - 1, ly],
       ] as Coord[]
-    ).filter(([x, y]) => unvisitedNodes.has(coordToIndex([x, y])));
+    ).filter(
+      ([x, y]) => input[y]?.[x] && !visitedNodes.has(coordToIndex([x, y]))
+    );
     const nodeScore = dist.get(nodeIndex)!;
     for (const [nx, ny] of unvisitedNeighbours) {
       eligibleNodes.add(coordToIndex([nx, ny]));
       const index = coordToIndex([nx, ny]);
       const score = nodeScore + input[ny][nx];
-      if (score < dist.get(index)!) {
+      if (score < (dist.get(index) ?? Infinity)) {
         dist.set(index, score);
         prevNodes.set(index, nodeIndex);
       }
     }
-    unvisitedNodes.delete(coordToIndex(node));
-    eligibleNodes.delete(coordToIndex(node));
+    visitedNodes.add(nodeIndex);
+    // unvisitedNodes.delete(nodeIndex);
+    eligibleNodes.delete(nodeIndex);
   };
 
   const totalNodes = w * h;
-  let visitedNodes = 1;
-  while (unvisitedNodes.size > 0) {
+  // let visitedNodes = 1;
+  while (visitedNodes.size < totalNodes) {
     const minDistEntry = Array.from(eligibleNodes.values())
+      // .filter((index) => dist.has(index))
       .map((index) => [index, dist.get(index)!])
-      .filter(([index, dist]) => dist !== Infinity)
       .reduce(
         ([minIndex, minDist], [index, dist]) => {
           if (dist < minDist) {
@@ -130,7 +125,7 @@ const process = (input: Input): number => {
       );
     const minNode = indexToCoord(minDistEntry[0]);
     search(minNode);
-    visitedNodes++;
+    // visitedNodes++;
 
     /*if (visitedNodes % 100 === 0) {
       console.log(`Visited ${visitedNodes}/${totalNodes} nodes`);
@@ -143,7 +138,7 @@ const process = (input: Input): number => {
         row
           .map((v, x) =>
             route.some(([rx, ry]) => rx === x && ry === y)
-              ? `\x1b[1m${v}\x1b[0m`
+              ? `\x1b[102m\x1b[90m${v}\x1b[0m`
               : v
           )
           .join("")
